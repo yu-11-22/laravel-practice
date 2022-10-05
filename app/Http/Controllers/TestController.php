@@ -3,7 +3,7 @@
  * @Author: yu-11-22 willy24692485@gmail.com
  * @Date: 2022-09-20 13:39:43
  * @LastEditors: yu-11-22 willy24692485@gmail.com
- * @LastEditTime: 2022-10-05 12:24:13
+ * @LastEditTime: 2022-10-05 16:30:36
  * @FilePath: \second-laravel\app\Http\Controllers\TestController.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,6 +12,8 @@ namespace App\Http\Controllers;
 
 use App\Member;
 use Session;
+use Cache;
+use DB;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -135,5 +137,58 @@ class TestController extends Controller
         echo Session::has('name');
         // 移除 session
         // Session::forget('name');
+    }
+
+    /**
+     * 快取設置
+     *
+     * @return void
+     */
+    public function cachetest()
+    {
+        // 設置一個緩存, 同名會覆蓋(分鐘)
+        Cache::put('class', 'social', 10);
+        Cache::put('class', 'geography', 10);
+        // 設置一個緩存, 同名不添加
+        Cache::add('class', 'none', 10);
+        Cache::add('school', 'Fenchia', 10);
+        // 獲取 cache 變量
+        echo Cache::get('class');
+        // 獲取 cache 變量, 不存在就返回默認值
+        echo Cache::get('school', 'none');
+        echo Cache::get('university', 'none');
+        echo Cache::get('time', function () {
+            return date('Y-m-d H:i:s', time());
+        });
+        // 檢查某個 cache 是否存在
+        var_dump(Cache::has('time'));
+        // 移除 cache
+        Cache::forget('class');
+
+        // 緩存計數器
+        Cache::add('count', '0', 100);
+        // Cache::increment('count');
+        // 一次加 10
+        Cache::increment('count', 10);
+        // 一次減 2
+        Cache::decrement('count', 2);
+
+        // 獲取 Cache, 如果不存在就創建它並賦予它預設值
+        $city = Cache::remember('city', 120, function () {
+            return 'Taiwan';
+        });
+        // dd($city);
+    }
+
+    /**
+     * 聯表查詢
+     *
+     * @return void
+     */
+    public function tableconnect()
+    { //SELECT article.id, article.article_name,author.author_name FROM `article` LEFT JOIN `author` ON article.author_id = author.id;
+        // 指定主表
+        $data = DB::table('article')->select('article.id', 'article.article_name', 'author.author_name')->leftJoin('author', 'article.author_id', '=', 'author.id')->get();
+        dd($data);
     }
 }
