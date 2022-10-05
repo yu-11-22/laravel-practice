@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>文件上傳</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -23,6 +24,7 @@
         <p>年齡：<input type="text" name="age" value="" placeholder="請輸入年齡"></p>
         <p>信箱：<input type="email" name="email" value="" placeholder="請輸入信箱"></p>
         <p>頭貼：<input type="file" name="avatar"></p>
+        <div class="g-recaptcha" data-sitekey="{{ config('captcha.sitekey') }}"></div>
         @csrf
         <input type="submit" value="送出">
     </form>

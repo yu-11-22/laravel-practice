@@ -3,7 +3,7 @@
  * @Author: yu-11-22 willy24692485@gmail.com
  * @Date: 2022-09-20 13:39:43
  * @LastEditors: yu-11-22 willy24692485@gmail.com
- * @LastEditTime: 2022-09-30 16:15:50
+ * @LastEditTime: 2022-10-05 09:44:14
  * @FilePath: \second-laravel\app\Http\Controllers\TestController.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -49,6 +49,7 @@ class TestController extends Controller
                 "name" => "required|min:2|max:20",
                 "age" => "required|integer|min:1|max:100",
                 "email" => "required|email",
+                'g-recaptcha-response' => 'required|captcha',
             ]);
             // 文件是否存在&&文件上傳過程是否出錯
             if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
@@ -62,6 +63,7 @@ class TestController extends Controller
                 $data = $request->all();
                 $data['avatar'] = './uploads/' . $path;
                 Member::create($data);
+                return view('welcome');
             }
         } else {
             return view('uploadform');
