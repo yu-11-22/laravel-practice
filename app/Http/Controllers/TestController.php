@@ -3,7 +3,7 @@
  * @Author: yu-11-22 willy24692485@gmail.com
  * @Date: 2022-09-20 13:39:43
  * @LastEditors: yu-11-22 willy24692485@gmail.com
- * @LastEditTime: 2022-10-05 11:38:25
+ * @LastEditTime: 2022-10-05 12:24:13
  * @FilePath: \second-laravel\app\Http\Controllers\TestController.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,6 +11,7 @@
 namespace App\Http\Controllers;
 
 use App\Member;
+use Session;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -63,7 +64,7 @@ class TestController extends Controller
                 $data = $request->all();
                 $data['avatar'] = './uploads/' . $path;
                 $result = Member::create($data);
-                if($result){
+                if ($result) {
                     return redirect('/');
                 }
             }
@@ -110,5 +111,29 @@ class TestController extends Controller
         // return json_encode($data);
         // return response()->json($data);
         return $data;
+    }
+
+    /**
+     * session 控制
+     *
+     * @return void
+     */
+    public function sessiontest()
+    {
+        // session 儲存變量鍵/值
+        Session::put('name', '林小強');
+        // session 獲取變量
+        echo Session::get('name');
+        // session 獲取變量, 不存在就返回默認值
+        echo Session::get('gender', '變量不存在');
+        echo Session::get('gender', function () {
+            return '該session不存在';
+        });
+        // 獲取全部 session 變量
+        // dd(Session::all());
+        // 檢查 session 是否存在 true:1 false:null
+        echo Session::has('name');
+        // 移除 session
+        // Session::forget('name');
     }
 }
