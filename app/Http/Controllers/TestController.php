@@ -3,7 +3,7 @@
  * @Author: yu-11-22 willy24692485@gmail.com
  * @Date: 2022-09-20 13:39:43
  * @LastEditors: yu-11-22 willy24692485@gmail.com
- * @LastEditTime: 2022-10-05 09:44:14
+ * @LastEditTime: 2022-10-05 11:38:25
  * @FilePath: \second-laravel\app\Http\Controllers\TestController.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -62,14 +62,22 @@ class TestController extends Controller
                 $request->file('avatar')->move('./uploads', $path);
                 $data = $request->all();
                 $data['avatar'] = './uploads/' . $path;
-                Member::create($data);
-                return view('welcome');
+                $result = Member::create($data);
+                if($result){
+                    return redirect('/');
+                }
             }
         } else {
             return view('uploadform');
         }
     }
 
+    /**
+     * 分頁功能
+     *
+     * @param Request $request
+     * @return void
+     */
     public function pagination(Request $request)
     {
         // 查詢數據
@@ -78,5 +86,29 @@ class TestController extends Controller
         $data = Member::paginate(1);
         // 展示視圖並且傳送數據
         return view('pagination', compact('data'));
+    }
+
+    /**
+     * ajax 頁面展示
+     *
+     * @return void
+     */
+    public function ajaxblade()
+    {
+        return view('ajaxblade');
+    }
+
+    /**
+     * ajax 響應測試
+     *
+     * @return void
+     */
+    public function ajaxtest()
+    {
+        $data = Member::get();
+        // json 響應
+        // return json_encode($data);
+        // return response()->json($data);
+        return $data;
     }
 }
