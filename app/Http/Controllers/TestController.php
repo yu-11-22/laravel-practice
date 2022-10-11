@@ -3,7 +3,7 @@
  * @Author: yu-11-22 willy24692485@gmail.com
  * @Date: 2022-09-20 13:39:43
  * @LastEditors: yu-11-22 willy24692485@gmail.com
- * @LastEditTime: 2022-10-05 16:30:36
+ * @LastEditTime: 2022-10-11 17:27:10
  * @FilePath: \second-laravel\app\Http\Controllers\TestController.php
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -190,5 +190,15 @@ class TestController extends Controller
         // 指定主表
         $data = DB::table('article')->select('article.id', 'article.article_name', 'author.author_name')->leftJoin('author', 'article.author_id', '=', 'author.id')->get();
         dd($data);
+    }
+
+    public function onetoone()
+    {
+        // 查詢數據
+        $data = \App\OneToOne\Article::get();
+        // 循環展示
+        foreach ($data as $value) {
+            echo $value->id . '&emsp;' . $value->article_name . '&emsp;' . $value->author->author_name . '&emsp;<br>';
+        }
     }
 }
