@@ -192,6 +192,11 @@ class TestController extends Controller
         dd($data);
     }
 
+    /**
+     * 一對一關聯模型
+     *
+     * @return void
+     */
     public function onetoone()
     {
         // 查詢數據
@@ -199,6 +204,26 @@ class TestController extends Controller
         // 循環展示
         foreach ($data as $value) {
             echo $value->id . '&emsp;' . $value->article_name . '&emsp;' . $value->author->author_name . '&emsp;<br>';
+        }
+    }
+
+    /**
+     * 一對多關聯模型
+     *
+     * @return void
+     */
+    public function onetoall()
+    {
+        // 查詢數據
+        $data = \App\OneToOne\Article::get();
+        // 循環展示
+        foreach ($data as $value) {
+            echo '文章：' . $value->article_name . '<br>對應評論：<br>';
+            // 循環評論
+            foreach ($value->comment as $subValue) {
+                echo $subValue->comment .'<br>';
+            }
+            echo '<hr>';
         }
     }
 }

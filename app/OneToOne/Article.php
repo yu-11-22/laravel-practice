@@ -16,4 +16,9 @@ class Article extends Model
     {
         return $this->hasOne('App\OneToOne\Author', 'id', 'author_id');
     }
+    // 模型關聯操作，關聯 comment 表，一對多關聯
+    public function comment()
+    {
+        return $this->hasMany('App\OneToAll\Comment', 'article_id', 'id');
+    }
 }
