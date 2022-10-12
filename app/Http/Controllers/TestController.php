@@ -221,7 +221,27 @@ class TestController extends Controller
             echo '文章：' . $value->article_name . '<br>對應評論：<br>';
             // 循環評論
             foreach ($value->comment as $subValue) {
-                echo $subValue->comment .'<br>';
+                echo $subValue->comment . '<br>';
+            }
+            echo '<hr>';
+        }
+    }
+
+    /**
+     * 多對多關聯模型
+     *
+     * @return void
+     */
+    public function alltoall()
+    {
+        // 查詢數據
+        $data = \App\OneToOne\Article::get();
+        // 循環展示
+        foreach ($data as $value) {
+            echo '文章：' . $value->article_name . '<br>對應關鍵字：<br>';
+            // 循環關鍵字
+            foreach ($value->keyword as $subValue) {
+                echo $subValue->keyword . '<br>';
             }
             echo '<hr>';
         }

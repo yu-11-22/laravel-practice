@@ -21,4 +21,10 @@ class Article extends Model
     {
         return $this->hasMany('App\OneToAll\Comment', 'article_id', 'id');
     }
+
+        // 模型關聯操作，關聯 keyword 表，多對多關聯
+        public function keyword()
+        {
+            return $this->belongsToMany('App\AllToAll\Keyword', 'relation', 'article_id', 'keyword_id');
+        }
 }
